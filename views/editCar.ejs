@@ -1,0 +1,29 @@
+<%- include('header', { title: 'Edit Car' }) %>
+  <h2>Edit Car</h2>
+
+  <form action="/cars/edit/<%= car.id %>" method="post">
+    <div>
+      <label for="make">Make:</label>
+      <input type="text" id="make" name="make" value="<%= car.make %>" required>
+    </div>
+    <div>
+      <label for="model">Model:</label>
+      <input type="text" id="model" name="model" value="<%= car.model %>" required>
+    </div>
+    <div>
+      <label for="year">Year:</label>
+      <input type="number" id="year" name="year" value="<%= car.year %>" required>
+    </div>
+    <div>
+      <label for="person_id">Owner:</label>
+      <select name="person_id" id="person_id" required>
+        <% people.forEach(person=> { %>
+          <option value="<%= person.id %>" <%=person.id===car.person_id ? 'selected' : '' %>><%= person.name %>
+          </option>
+          <% }) %>
+      </select>
+    </div>
+    <button type="submit">Update Car</button>
+  </form>
+
+  <%- include('footer') %>

@@ -1,0 +1,38 @@
+<%- include('header', { title: 'People' }) %>
+  <h2>People</h2>
+
+  <form method="get" action="/people">
+    <input type="text" name="filter" value="<%= filter %>" placeholder="Filter by name">
+    <select name="sortBy">
+      <option value="name" <%=sortBy==='name' ? 'selected' : '' %>>Name</option>
+      <option value="email" <%=sortBy==='email' ? 'selected' : '' %>>Email</option>
+    </select>
+    <select name="order">
+      <option value="asc" <%=order==='asc' ? 'selected' : '' %>>Ascending</option>
+      <option value="desc" <%=order==='desc' ? 'selected' : '' %>>Descending</option>
+    </select>
+    <button type="submit">Apply</button>
+  </form>
+
+  <a href="/people/create">Add New Person</a>
+  <ul>
+    <% people.forEach(person=> { %>
+      <li>
+        <%= person.name %> - <%= person.email %>
+            <a href="/people/<%= person.id %>">View Details</a>
+            <a href="/people/edit/<%= person.id %>">Edit</a>
+            <form action="/people/delete/<%= person.id %>" method="post" style="display:inline;">
+              <button type="submit">Delete</button>
+            </form>
+      </li>
+      <% }) %>
+  </ul>
+
+  <div>
+    <a href="?page=<%= page - 1 %>&limit=<%= limit %>&sortBy=<%= sortBy %>&order=<%= order %>&filter=<%= filter %>"
+      <%=page <=1 ? 'style="display:none;"' : '' %>>Previous</a>
+    <a
+      href="?page=<%= page + 1 %>&limit=<%= limit %>&sortBy=<%= sortBy %>&order=<%= order %>&filter=<%= filter %>">Next</a>
+  </div>
+
+  <%- include('footer') %>

@@ -1,0 +1,43 @@
+<%- include('header', { title: 'Cars' }) %>
+  <h2>Cars</h2>
+
+  <form method="get" action="/cars">
+    <input type="text" name="filter" value="<%= filter %>" placeholder="Filter by make">
+    <select name="sortBy">
+      <option value="make" <%=sortBy==='make' ? 'selected' : '' %>>Make</option>
+      <option value="model" <%=sortBy==='model' ? 'selected' : '' %>>Model</option>
+      <option value="year" <%=sortBy==='year' ? 'selected' : '' %>>Year</option>
+    </select>
+    <select name="order">
+      <option value="asc" <%=order==='asc' ? 'selected' : '' %>>Ascending</option>
+      <option value="desc" <%=order==='desc' ? 'selected' : '' %>>Descending</option>
+    </select>
+    <button type="submit">Apply</button>
+  </form>
+
+  <% if (user && user.role==='admin' ) { %>
+    <a href="/cars/create">Add New Car</a>
+    <% } %>
+      <ul>
+        <% cars.forEach(car=> { %>
+          <li>
+            <%= car.make %> - <%= car.model %> - <%= car.year %> - Owner: <%= car.owner_name %>
+                    <a href="/cars/<%= car.id %>">View Details</a>
+                    <% if (user && user.role==='admin' ) { %>
+                      <a href="/cars/edit/<%= car.id %>">Edit</a>
+                      <form action="/cars/delete/<%= car.id %>" method="post" style="display:inline;">
+                        <button type="submit">Delete</button>
+                      </form>
+                      <% } %>
+          </li>
+          <% }) %>
+      </ul>
+
+      <div>
+        <a href="?page=<%= page - 1 %>&limit=<%= limit %>&sortBy=<%= sortBy %>&order=<%= order %>&filter=<%= filter %>"
+          <%=page <=1 ? 'style="display:none;"' : '' %>>Previous</a>
+        <a
+          href="?page=<%= page + 1 %>&limit=<%= limit %>&sortBy=<%= sortBy %>&order=<%= order %>&filter=<%= filter %>">Next</a>
+      </div>
+
+      <%- include('footer') %>
